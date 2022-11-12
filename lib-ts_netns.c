@@ -32,7 +32,7 @@ libts_netns_get_sfc_ta(char **ta)
     te_errno rc;
     char     *if_name;
     char     *agent;
-    int       status;
+    int32_t  status;
 
     agent = getenv("TE_IUT_TA_NAME");
     if (agent == NULL)
@@ -48,9 +48,8 @@ libts_netns_get_sfc_ta(char **ta)
         return TE_RC(TE_TAPI, te_rc_os2te(errno));
     }
 
-    rc = cfg_get_instance_fmt(CVT_INTEGER, &status,
-                              "/agent:%s/interface:%s/status:",
-                              agent, if_name);
+    rc = cfg_get_int32(&status, "/agent:%s/interface:%s/status:",
+                       agent, if_name);
     if (rc == TE_RC(TE_CS, TE_ENOENT))
     {
         agent = getenv("TE_IUT_TA_NAME_NS");
